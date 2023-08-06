@@ -7,7 +7,7 @@ Board = [[-1 for _ in range(cols)] for _ in range(rows)]
 
 curTurn=0
 curRealm=-1
-m=3*y+x
+
 def makeGrid(width, height, x, y, a):
     height=int(height)
     width=int(width)
@@ -82,7 +82,6 @@ while running:
     
     x,y=getClick(width,height)
     pygame.draw.circle(screen, (255,0,0), (width*x/9+width/18,height*y/9+height/18), 10)
-    
 
 
 
