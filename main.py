@@ -21,14 +21,6 @@ def makeGrid(width, height, x, y, a):
     pygame.draw.line(screen, (0,0,a*255), (x+0,y+ int(1/3*height)), (x+width, y+ int(1/3*height)), int(height*0.02))
     pygame.draw.line(screen, (0,0,a*255), (x+0,y+  int(2/3*height)), (x+width, y+ int(2/3*height)), int(height*0.02))
 
-    # if a==0:
-    #     # Border
-    #     pygame.draw.line(screen, (100,0,0), (x+0, y+0), (x+width,y+ 0), int(height*0.03))
-    #     pygame.draw.line(screen, (100,0,0), (x+0, y+height), (x+width, y+height), int(height*0.03))
-    #     pygame.draw.line(screen, (100,0,0), (x+0, y+0), (x+0, y+height), int(width*0.03))
-    #     pygame.draw.line(screen, (100,0,0), (x+width,y+ 0), (x+width, y+height), int(width*0.03))
-
-
 def getClick(w,h):
     x,y = pygame.mouse.get_pos()
     X=int(9*x/w)
@@ -82,7 +74,5 @@ while running:
     
     x,y=getClick(width,height)
     pygame.draw.circle(screen, (255,0,0), (width*x/9+width/18,height*y/9+height/18), 10)
-
-
 
     pygame.display.update()
