@@ -33,10 +33,46 @@ def makeBoard(self):
 def mouseClicked(self):
     x,y=getClick(self.pygame,self.width,self.height)
     self.clickedRealm=(x//3)+3*(y//3)
+    if self.BoardState[self.curRealm]!=-1:
+        self.curRealm=-1
     if self.curRealm==-1 or self.curRealm==self.clickedRealm:
-        self.Board[x][y]=self.curTurn
-        self.curTurn=self.curTurn ^ 1
-        x=x%3
-        y=y%3
-        self.curRealm=3*y+x
-        print(self.curRealm)
+        if self.curRealm==-1 or self.BoardState[self.curRealm] == -1:
+            self.Board[x][y]=self.curTurn
+            self.curTurn=self.curTurn ^ 1
+            x=x%3
+            y=y%3
+            self.curRealm=3*y+x
+    for i in range(9):
+        self.BoardState[i]=gridFilled(self, i)
+
+def renderMoves(pygame):
+    for i in range(pygame.rows):
+        for j in range (pygame.cols):
+            Xcoord=int((1/9)*i*pygame.width+1/180*pygame.width)
+            Ycoord=int(1/9*j*pygame.height+1/180*pygame.height)
+            if pygame.Board[i][j]==1:
+                pygame.screen.blit(pygame.X_image, (Xcoord, Ycoord))
+            if pygame.Board[i][j]==0:
+                pygame.screen.blit(pygame.O_image, (Xcoord, Ycoord))
+
+def gridFilled(pygame, boardNumber):
+    grid=[[-1 for _ in range(3)] for _ in range (3)]
+    for i in range (9):
+        for j in range(9):
+            if i//3+3*(j//3) == boardNumber:
+                grid[i%3][j%3]=pygame.Board[i][j]
+    for i in range (3):
+        if grid[i][0]==grid[i][1] and grid[i][2]==grid[i][1]:
+            return grid[i][0]
+    for i in range (3):
+        if grid[0][i]==grid[1][i] and grid[2][i]==grid[1][i]:
+            return grid[0][i]
+    if grid[0][0]==grid[1][1] and grid[2][2]==grid[1][1]:
+        return grid[0][0]
+    if grid[2][0]==grid[1][1] and grid[0][2]==grid[1][1]:
+        return grid[1][1]
+    return -1
+
+
+
+              
