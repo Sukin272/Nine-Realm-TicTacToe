@@ -17,45 +17,26 @@ class Game:
 
     def run(self):
         while self.running:
+            self.width = self.screen.get_width()
+            self.height = self.screen.get_height()
             self.update()
             self.render()
     
     def update(self):
-        self.width = self.screen.get_width()
-        self.height = self.screen.get_height()
+        
         for event in self.pygame.event.get():
             if event.type == self.pygame.QUIT:
                 self.running = False
             if event.type == self.pygame.MOUSEBUTTONUP:
-                x,y=logic.getClick(self.pygame,self.width,self.height)
-                self.clickedRealm=(x//3)+3*(y//3)
-                if self.curRealm==-1 or self.curRealm==self.clickedRealm:
-                    self.Board[x][y]=self.curTurn
-                    self.curTurn=self.curTurn ^ 1
-                    x=x%3
-                    y=y%3
-                    self.curRealm=3*y+x
-                    print(self.curRealm)
+                logic.mouseClicked(self)
     
     def render(self):
         self.screen.fill((0,0,0))
-
-
-        logic.makeGrid(self.pygame,self.screen,1/3*self.width, 1/3*self.height,0,0,1)
-        logic.makeGrid(self.pygame,self.screen,1/3*self.width, 1/3*self.height,1/3*self.width,0,1)
-        logic.makeGrid(self.pygame,self.screen,1/3*self.width, 1/3*self.height,2/3*self.width,0,1)
-
-        logic.makeGrid(self.pygame,self.screen,1/3*self.width, 1/3*self.height,1/3*self.width,1/3*self.height,1)
-        logic.makeGrid(self.pygame,self.screen,1/3*self.width, 1/3*self.height,0,1/3*self.height,1)
-        logic.makeGrid(self.pygame,self.screen,1/3*self.width, 1/3*self.height,2/3*self.width,1/3*self.height,1)
-
-        logic.makeGrid(self.pygame,self.screen,1/3*self.width, 1/3*self.height,0,2/3*self.height,1)
-        logic.makeGrid(self.pygame,self.screen,1/3*self.width, 1/3*self.height,1/3*self.width,2/3*self.height,1)
-        logic.makeGrid(self.pygame,self.screen,1/3*self.width, 1/3*self.height,2/3*self.width,2/3*self.height,1)
-
-        logic.makeGrid(self.pygame,self.screen,self.width, self.height,0,0,0)
+        logic.makeBoard(self)
         
         x,y=logic.getClick(self.pygame,self.width,self.height)
         self.pygame.draw.circle(self.screen, (255,0,0), (self.width*x/9+self.width/18,self.height*y/9+self.height/18), 10)
 
         self.pygame.display.update()
+    
+    

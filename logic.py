@@ -14,3 +14,29 @@ def getClick(pygame,w,h):
     X=int(9*x/w)
     Y=int(9*y/h)
     return X,Y
+
+def makeBoard(self):
+        makeGrid(self.pygame,self.screen,1/3*self.width, 1/3*self.height,0,0,1)
+        makeGrid(self.pygame,self.screen,1/3*self.width, 1/3*self.height,1/3*self.width,0,1)
+        makeGrid(self.pygame,self.screen,1/3*self.width, 1/3*self.height,2/3*self.width,0,1)
+
+        makeGrid(self.pygame,self.screen,1/3*self.width, 1/3*self.height,1/3*self.width,1/3*self.height,1)
+        makeGrid(self.pygame,self.screen,1/3*self.width, 1/3*self.height,0,1/3*self.height,1)
+        makeGrid(self.pygame,self.screen,1/3*self.width, 1/3*self.height,2/3*self.width,1/3*self.height,1)
+
+        makeGrid(self.pygame,self.screen,1/3*self.width, 1/3*self.height,0,2/3*self.height,1)
+        makeGrid(self.pygame,self.screen,1/3*self.width, 1/3*self.height,1/3*self.width,2/3*self.height,1)
+        makeGrid(self.pygame,self.screen,1/3*self.width, 1/3*self.height,2/3*self.width,2/3*self.height,1)
+
+        makeGrid(self.pygame,self.screen,self.width, self.height,0,0,0)
+
+def mouseClicked(self):
+    x,y=getClick(self.pygame,self.width,self.height)
+    self.clickedRealm=(x//3)+3*(y//3)
+    if self.curRealm==-1 or self.curRealm==self.clickedRealm:
+        self.Board[x][y]=self.curTurn
+        self.curTurn=self.curTurn ^ 1
+        x=x%3
+        y=y%3
+        self.curRealm=3*y+x
+        print(self.curRealm)
