@@ -1,13 +1,13 @@
-def makeGrid(pygame,screen,width, height, x, y, a):
+def makeGrid(pygame,screen,width, height, x, y, a,color=0):
     height=int(height)
     width=int(width)
     x=int(x)
     y=int(y)
     
-    pygame.draw.line(screen, (0,0,a*255), (x+int(1/3*width),y+  0), (x+int(1/3*width),y+  height), int(width*0.02))
-    pygame.draw.line(screen, (0,0,a*255), (x+int(2/3*width),y+  0), (x+int(2/3*width),y+  height), int(width*0.02))
-    pygame.draw.line(screen, (0,0,a*255), (x+0,y+ int(1/3*height)), (x+width, y+ int(1/3*height)), int(height*0.02))
-    pygame.draw.line(screen, (0,0,a*255), (x+0,y+  int(2/3*height)), (x+width, y+ int(2/3*height)), int(height*0.02))
+    pygame.draw.line(screen, (color,0,a*255), (x+int(1/3*width),y+  0), (x+int(1/3*width),y+  height), int(width*0.02))
+    pygame.draw.line(screen, (color,0,a*255), (x+int(2/3*width),y+  0), (x+int(2/3*width),y+  height), int(width*0.02))
+    pygame.draw.line(screen, (color,0,a*255), (x+0,y+ int(1/3*height)), (x+width, y+ int(1/3*height)), int(height*0.02))
+    pygame.draw.line(screen, (color,0,a*255), (x+0,y+  int(2/3*height)), (x+width, y+ int(2/3*height)), int(height*0.02))
 
 def getClick(pygame,w,h):
     x,y = pygame.mouse.get_pos()
@@ -28,13 +28,10 @@ def makeBoard(self):
         makeGrid(self.pygame,self.screen,1/3*self.width, 1/3*self.height,1/3*self.width,2/3*self.height,1)
         makeGrid(self.pygame,self.screen,1/3*self.width, 1/3*self.height,2/3*self.width,2/3*self.height,1)
 
-        makeGrid(self.pygame,self.screen,self.width, self.height,0,0,0)
 
 def mouseClicked(self):
     x,y=getClick(self.pygame,self.width,self.height)
     self.clickedRealm=(x//3)+3*(y//3)
-    if self.BoardState[self.curRealm]!=-1:
-        self.curRealm=-1
     if self.curRealm==-1 or self.curRealm==self.clickedRealm:
         if self.curRealm==-1 or self.BoardState[self.curRealm] == -1:
             self.Board[x][y]=self.curTurn
@@ -42,8 +39,14 @@ def mouseClicked(self):
             x=x%3
             y=y%3
             self.curRealm=3*y+x
+    
+    x,y=getClick(self.pygame,self.width,self.height)
+    self.clickedRealm=(x//3)+3*(y//3)
     for i in range(9):
         self.BoardState[i]=gridFilled(self, i)
+    if self.BoardState[self.curRealm]!=-1:
+        self.curRealm=-1
+    # print(self.BoardState)
 
 def renderMoves(pygame):
     for i in range(pygame.rows):
@@ -62,16 +65,31 @@ def gridFilled(pygame, boardNumber):
             if i//3+3*(j//3) == boardNumber:
                 grid[i%3][j%3]=pygame.Board[i][j]
     for i in range (3):
-        if grid[i][0]==grid[i][1] and grid[i][2]==grid[i][1]:
+        # print(grid[i][0],grid[i][1],grid[i][2])
+        if grid[i][0]==grid[i][1] and grid[i][2]==grid[i][1] and grid[i][0]!=-1:
             return grid[i][0]
     for i in range (3):
-        if grid[0][i]==grid[1][i] and grid[2][i]==grid[1][i]:
+        if grid[0][i]==grid[1][i] and grid[2][i]==grid[1][i] and grid[0][i]!=-1:
             return grid[0][i]
-    if grid[0][0]==grid[1][1] and grid[2][2]==grid[1][1]:
+    if grid[0][0]==grid[1][1] and grid[2][2]==grid[1][1] and grid[1][1]!=-1:
         return grid[0][0]
-    if grid[2][0]==grid[1][1] and grid[0][2]==grid[1][1]:
+    if grid[2][0]==grid[1][1] and grid[0][2]==grid[1][1] and grid[1][1]!=-1:
         return grid[1][1]
     return -1
+
+def highlight(self):
+    print(self.curRealm)
+    if self.curRealm != -1: 
+        x=self.curRealm//3
+        y=self.curRealm%3
+        makeGrid(self.pygame,self.screen,1/3*self.width, 1/3*self.height,y/3*self.width,x/3*self.height,1,200)
+    else:
+        for i in range(9):
+            if self.BoardState[i]==-1:
+                x=i//3
+                y=i%3
+                makeGrid(self.pygame,self.screen,1/3*self.width, 1/3*self.height,y/3*self.width,x/3*self.height,1,200)
+
 
 
 

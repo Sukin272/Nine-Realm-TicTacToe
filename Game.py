@@ -37,15 +37,22 @@ class Game:
                 self.running = False
             if event.type == self.pygame.MOUSEBUTTONUP:
                 logic.mouseClicked(self)
-                print(logic.gridFilled(self,1))
+                # print(logic.gridFilled(self,1))
 
     
     def render(self):
         self.screen.fill((0,0,0))
+
         logic.makeBoard(self)
+
         x,y=logic.getClick(self.pygame,self.width,self.height)
         self.pygame.draw.circle(self.screen, (255,0,0), (self.width*x/9+self.width/18,self.height*y/9+self.height/18), 10)
+
         logic.renderMoves(self)
+
+        logic.highlight(self) 
+
+        logic.makeGrid(self.pygame,self.screen,self.width, self.height,0,0,0)
 
         self.pygame.display.update()
     
