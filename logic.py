@@ -1,3 +1,4 @@
+import pygame as pg
 def makeGrid(pygame,screen,width, height, x, y, a,color=0):
     height=int(height)
     width=int(width)
@@ -31,6 +32,12 @@ def makeBoard(self):
 
 def mouseClicked(self):
     x,y=getClick(self.pygame,self.width,self.height)
+    if self.Board[x][y]!=-1:
+        return
+    X=x//3
+    Y=y//3
+    if self.BoardState[X+3*Y]!=-1:
+        return
     self.clickedRealm=(x//3)+3*(y//3)
     if self.curRealm==-1 or self.curRealm==self.clickedRealm:
         if self.curRealm==-1 or self.BoardState[self.curRealm] == -1:
@@ -51,6 +58,8 @@ def mouseClicked(self):
 def renderMoves(pygame):
     for i in range(pygame.rows):
         for j in range (pygame.cols):
+            if pygame.BoardState[i//3 + 3*(j//3)] != -1:
+                continue
             Xcoord=int((1/9)*i*pygame.width+1/180*pygame.width)
             Ycoord=int(1/9*j*pygame.height+1/180*pygame.height)
             if pygame.Board[i][j]==1:
@@ -90,7 +99,39 @@ def highlight(self):
                 y=i%3
                 makeGrid(self.pygame,self.screen,1/3*self.width, 1/3*self.height,y/3*self.width,x/3*self.height,1,200)
 
+def renderBigWins(pygame):
+    for i in range (9):
+        x=((i//3) * (pygame.width/3))+pygame.width/24
+        y=(i%3)* (pygame.height/3)+pygame.height/24
+        X_image=pg.image.load("pictures/X.xcf")
+        X_image=pg.transform.scale(pygame.X_image, (1/4*pygame.width, 1/4*pygame.height))
+        O_image=pg.image.load("pictures/O.xcf")
+        O_image=pg.transform.scale(pygame.O_image, (1/4*pygame.width, 1/4*pygame.height))
+        if pygame.BoardState[i] == 1:
+            pygame.screen.blit(X_image, (y, x))
 
+        elif pygame.BoardState[i] == 0:
+            pygame.screen.blit(O_image, (y, x))
+
+def gameEnd(self):
+        
+        grid=[[-1 for _ in range(3)] for _ in range (3)]
+        for i in range(3):
+            for j in range(3):
+                grid[i][j]=self.BoardState[i+3*j]
+        for i in range (3):
+            # print(grid[i][0],grid[i][1],grid[i][2])
+            if grid[i][0]==grid[i][1] and grid[i][2]==grid[i][1] and grid[i][0]!=-1:
+                return grid[i][0]
+        for i in range (3):
+            if grid[0][i]==grid[1][i] and grid[2][i]==grid[1][i] and grid[0][i]!=-1:
+                return grid[0][i]
+        if grid[0][0]==grid[1][1] and grid[2][2]==grid[1][1] and grid[1][1]!=-1:
+            return grid[0][0]
+        if grid[2][0]==grid[1][1] and grid[0][2]==grid[1][1] and grid[1][1]!=-1:
+            return grid[1][1]
+        return -1
+        
 
 
               

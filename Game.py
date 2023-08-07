@@ -9,7 +9,7 @@ class Game:
         self.cols = 9
         self.Board = [[-1 for _ in range(self.cols)] for _ in range(self.rows)]
         self.width=self.height=1000
-
+        self.clock = pygame.time.Clock()
         self.BoardState=[-1 for _ in range (9)]
 
         self.X_image=pygame.image.load("pictures/X.xcf")
@@ -38,6 +38,7 @@ class Game:
             if event.type == self.pygame.MOUSEBUTTONUP:
                 logic.mouseClicked(self)
                 # print(logic.gridFilled(self,1))
+        self.clock.tick(60)
 
     
     def render(self):
@@ -52,8 +53,19 @@ class Game:
 
         logic.highlight(self) 
 
+        logic.renderBigWins(self)
+
         logic.makeGrid(self.pygame,self.screen,self.width, self.height,0,0,0)
 
+        oimg=pygame.image.load("pictures/O.xcf")
+        ximg=pygame.image.load("pictures/X.xcf")
+
+        end = logic.gameEnd(self)
+        if end==1:
+            self.screen.blit(ximg, (0, 0))
+        if end ==0:
+            self.screen.blit(oimg, (0, 0))
+            
         self.pygame.display.update()
     
     
