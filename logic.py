@@ -84,10 +84,17 @@ def gridFilled(pygame, boardNumber):
         return grid[0][0]
     if grid[2][0]==grid[1][1] and grid[0][2]==grid[1][1] and grid[1][1]!=-1:
         return grid[1][1]
+    count=0
+    for i in range (3):
+        for j in range(3):
+            if grid[i][j]!=-1:
+                count=count+1
+    if count == 9:
+        return 2
     return -1
 
 def highlight(self):
-    print(self.curRealm)
+    # print(self.curRealm)
     if self.curRealm != -1: 
         x=self.curRealm//3
         y=self.curRealm%3
@@ -101,17 +108,24 @@ def highlight(self):
 
 def renderBigWins(pygame):
     for i in range (9):
-        x=((i//3) * (pygame.width/3))+pygame.width/24
-        y=(i%3)* (pygame.height/3)+pygame.height/24
+        y=((i//3) * (pygame.height/3))+pygame.height/24
+        x=(i%3)* (pygame.width/3)+pygame.width/24
+        
         X_image=pg.image.load("pictures/X.xcf")
         X_image=pg.transform.scale(pygame.X_image, (1/4*pygame.width, 1/4*pygame.height))
         O_image=pg.image.load("pictures/O.xcf")
         O_image=pg.transform.scale(pygame.O_image, (1/4*pygame.width, 1/4*pygame.height))
+        tie=pg.image.load("pictures/Tie.jpg")
+        tie=pg.transform.scale(tie, (1/4*pygame.width, 1/4*pygame.height))
+        
         if pygame.BoardState[i] == 1:
-            pygame.screen.blit(X_image, (y, x))
+            pygame.screen.blit(X_image, (x, y))
 
         elif pygame.BoardState[i] == 0:
-            pygame.screen.blit(O_image, (y, x))
+            pygame.screen.blit(O_image, (x, y))
+        
+        elif pygame.BoardState[i] == 2:
+            pygame.screen.blit(tie, (x, y))
 
 def gameEnd(self):
         
@@ -130,6 +144,13 @@ def gameEnd(self):
             return grid[0][0]
         if grid[2][0]==grid[1][1] and grid[0][2]==grid[1][1] and grid[1][1]!=-1:
             return grid[1][1]
+        count=0
+        for i in range (3):
+            for j in range(3):
+                if grid[i][j]!=-1:
+                    count=count+1
+        if count == 9:
+            return 2
         return -1
         
 
